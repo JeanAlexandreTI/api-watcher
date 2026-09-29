@@ -29,7 +29,7 @@ class ApiWatcher():
     def pausa_redireciona_menu(self):
         sleep(1)
 
-        input("\nSelecione alguma tecla para retornar ao menu: ")
+        input("\nSelecione Alguma Tecla Para Retornar ao Menu: ")
         
         print("Redirecionando Para Menu...")
         sleep(3)
@@ -51,10 +51,14 @@ class ApiWatcher():
 
     def listar_api(self):
         nome_procurado = input("Informe o Nome da Api Procurada: ").upper().strip()
-        if nome_procurado != "":
-            print(pl.DataFrame(self.__lista_api).filter(pl.col("nome_api").str.contains(nome_procurado)))
-        else:
-            print(pl.DataFrame(self.__lista_api))
+        try:
+            if nome_procurado != "":
+                print(pl.DataFrame(self.__lista_api).filter(pl.col("nome_api").str.contains(nome_procurado)))
+            else:
+                print(pl.DataFrame(self.__lista_api))
+
+        except pl.exceptions.ColumnNotFoundError:
+            print("\nAPI Procurada Incorreta ou Inexistente.")
 
         self.pausa_redireciona_menu()
 
@@ -78,6 +82,10 @@ class ApiWatcher():
                 elif opcao == 3:
                     self.titulo("Sistema Encerrado.")
                     break
+
+                else:
+                    print("Por Favor, Informe um Dos Valores Exibidos no Menu.")
+                    self.pausa_redireciona_menu()
 
             except ValueError:
                 print("ERRO! Por Favor, Informe um Valor Inteiro.")
