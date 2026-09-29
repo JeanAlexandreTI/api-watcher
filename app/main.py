@@ -31,6 +31,14 @@ class ApiWatcher():
     #     print()
     #     self.selecionar_menu()
 
+    def pausa_redireciona_menu(self):
+        sleep(1)
+
+        input("\nSelecione alguma tecla para retornar ao menu: ")
+        
+        print("Redirecionando Para Menu...")
+        sleep(3)
+
 
     def cadastro(self):
         self.titulo("| CADASTRO |")
@@ -43,6 +51,7 @@ class ApiWatcher():
         self.__lista_api.append(dados)
         print(f"\n{dados['nome_api']} cadastrado(a) com sucesso.")
 
+        self.pausa_redireciona_menu()
         self.selecionar_menu()
 
 
@@ -53,10 +62,12 @@ class ApiWatcher():
         else:
             print(pl.DataFrame(self.__lista_api))
 
+        self.pausa_redireciona_menu()
         self.selecionar_menu()
 
 
     def selecionar_menu(self):
+    
         while True:
             try:
 
@@ -67,17 +78,17 @@ class ApiWatcher():
 
                 if opcao == 1:
                     self.cadastro()
+                    break
                 elif opcao == 2:
                     self.listar_api()
+                    break               
                 elif opcao == 3:
                     self.titulo("Sistema Encerrado.")
                     break
 
             except ValueError:
                 print("ERRO! Por Favor, Informe um Valor Inteiro.")
-                sleep(1)
-                print("Redirecionando Para Menu...")
-                sleep(3)
+                self.pausa_redireciona_menu()
 
 
     def main(self):
