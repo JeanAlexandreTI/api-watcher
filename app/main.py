@@ -26,10 +26,10 @@ class ApiWatcher():
         print(texto,"\n")
 
 
-    def retornar_menu(self):
-        input("\nSelecione alguma tecla para retornar ao menu: ")
-        print()
-        self.selecionar_menu()
+    # def retornar_menu(self):
+    #     input("\nSelecione alguma tecla para retornar ao menu: ")
+    #     print()
+    #     self.selecionar_menu()
 
 
     def cadastro(self):
@@ -43,7 +43,7 @@ class ApiWatcher():
         self.__lista_api.append(dados)
         print(f"\n{dados['nome_api']} cadastrado(a) com sucesso.")
 
-        self.retornar_menu()
+        self.selecionar_menu()
 
 
     def listar_api(self):
@@ -53,30 +53,31 @@ class ApiWatcher():
         else:
             print(pl.DataFrame(self.__lista_api))
 
-        self.retornar_menu()
+        self.selecionar_menu()
 
 
     def selecionar_menu(self):
-        try:
+        while True:
+            try:
 
-            self.titulo("| MENU |")
-            self.menu()
+                self.titulo("| MENU |")
+                self.menu()
 
-            opcao = int(input("Opcao: "))
+                opcao = int(input("Opcao: "))
 
-            if opcao == 1:
-                self.cadastro()
-            elif opcao == 2:
-                self.listar_api()
-            elif opcao == 3:
-                self.titulo("Sistema Encerrado.")
+                if opcao == 1:
+                    self.cadastro()
+                elif opcao == 2:
+                    self.listar_api()
+                elif opcao == 3:
+                    self.titulo("Sistema Encerrado.")
+                    break
 
-        except ValueError:
-            print("ERRO! Por Favor, Informe um Valor Inteiro.")
-            sleep(1)
-            print("Redirecionando Para Menu...")
-            sleep(3)
-            self.selecionar_menu()
+            except ValueError:
+                print("ERRO! Por Favor, Informe um Valor Inteiro.")
+                sleep(1)
+                print("Redirecionando Para Menu...")
+                sleep(3)
 
 
     def main(self):
