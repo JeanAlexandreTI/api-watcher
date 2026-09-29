@@ -1,12 +1,9 @@
-# CADASTRAR API: Nome e URL
-# LISTAR API: Informar todas as API
 import os
-import polars as pl
 from time import sleep
 
 class ApiWatcher():
     def __init__(self):
-        self.__lista_api = []
+        self.__lista_api = [{"nome_api":"GOOGLE", "url_api":"api_google", "token":"tokengoogle"}]
 
 
     def menu(self):
@@ -27,12 +24,13 @@ class ApiWatcher():
 
 
     def pausa_redireciona_menu(self):
+        self.limpar_visao()
         sleep(1)
 
         input("\nSelecione Alguma Tecla Para Retornar ao Menu: ")
         
         print("Redirecionando Para Menu...")
-        sleep(3)
+        sleep(2)
 
 
     def cadastro(self):
@@ -51,15 +49,11 @@ class ApiWatcher():
 
     def listar_api(self):
         nome_procurado = input("Informe o Nome da Api Procurada: ").upper().strip()
-        try:
-            if nome_procurado != "":
-                print(pl.DataFrame(self.__lista_api).filter(pl.col("nome_api").str.contains(nome_procurado)))
-            else:
-                print(pl.DataFrame(self.__lista_api))
 
-        except pl.exceptions.ColumnNotFoundError:
-            print("\nAPI Procurada Incorreta ou Inexistente.")
-
+        if [i for i in self.__lista_api if i["nome_api"] == nome_procurado] == []:
+            print("\nNome Procurado Inexistente.")
+        else:
+            print([i for i in self.__lista_api if i["nome_api"] == nome_procurado])
         self.pausa_redireciona_menu()
 
 
