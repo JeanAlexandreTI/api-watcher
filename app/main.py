@@ -3,7 +3,11 @@ from time import sleep
 
 class ApiWatcher():
     def __init__(self):
-        self.__lista_api = [{"nome_api":"GOOGLE", "url_api":"api_google", "token":"tokengoogle"}]
+        self.__lista_de_api = [
+            {"nome_api":"AIRBNB", "url_api":"api_airbnb", "token":"tokenairbnb"},  
+            {"nome_api":"GOOGLE", "url_api":"api_google", "token":"tokengoogle"},
+            {"nome_api":"AIRSOFT", "url_api":"api_airsoft", "token":"tokenairsoft"},
+            ]
 
 
     def menu(self):
@@ -24,10 +28,9 @@ class ApiWatcher():
 
 
     def pausa_redireciona_menu(self):
-        self.limpar_visao()
         sleep(1)
-
         input("\nSelecione Alguma Tecla Para Retornar ao Menu: ")
+        self.limpar_visao()
         
         print("Redirecionando Para Menu...")
         sleep(2)
@@ -41,7 +44,7 @@ class ApiWatcher():
             "token_api": input("Token: ").strip()
         }
 
-        self.__lista_api.append(dados)
+        self.__lista_de_api.append(dados)
         print(f"\n{dados['nome_api']} cadastrado(a) com sucesso.")
 
         self.pausa_redireciona_menu()
@@ -50,10 +53,7 @@ class ApiWatcher():
     def listar_api(self):
         nome_procurado = input("Informe o Nome da Api Procurada: ").upper().strip()
 
-        if [i for i in self.__lista_api if i["nome_api"] == nome_procurado] == []:
-            print("\nNome Procurado Inexistente.")
-        else:
-            print([i for i in self.__lista_api if i["nome_api"] == nome_procurado])
+        print([i for i in self.__lista_de_api if i["nome_api"].count(nome_procurado)])
         self.pausa_redireciona_menu()
 
 
