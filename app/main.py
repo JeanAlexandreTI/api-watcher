@@ -51,19 +51,21 @@ class ApiWatcher():
 
 
     def listar_api(self):
-        nome_procurado = input("Informe o Nome da Api Procurada ou Tecle Enter Para Listar Diversas: ").upper().strip()
+        nome_procurado = input("\nInforme o Nome da Api Procurada ou Tecle Enter Para Listar Diversas: ").upper().strip()
         resultado_busca = [i for i in self.__lista_de_api if nome_procurado in i["nome_api"]]
 
-        if len(self.__lista_de_api) > 0: 
-            if resultado_busca == []:
+        if not self.__lista_de_api == False: 
+            if nome_procurado == "":
+                print("\n", self.__lista_de_api)
+            elif resultado_busca == []:
                 print("Api Procurada Fora do Catalogo.")
             else:
                 print(resultado_busca)
-            self.pausa_redireciona_menu()
        
         else:
             print("\nNenhuma Api Cadastrada em Sistema.")
-            self.pausa_redireciona_menu()
+       
+        self.pausa_redireciona_menu()
 
 
     def selecionar_menu(self):
