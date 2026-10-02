@@ -4,9 +4,9 @@ from time import sleep
 class ApiWatcher():
     def __init__(self):
         self.__lista_de_api = [
-            {"nome_api":"AIRBNB", "url_api":"api_airbnb", "token":"tokenairbnb"},  
-            {"nome_api":"GOOGLE", "url_api":"api_google", "token":"tokengoogle"},
-            {"nome_api":"AIRSOFT", "url_api":"api_airsoft", "token":"tokenairsoft"},
+            {"nome_api":"AIRBNB", "url_api":"api_airbnb"},  
+            {"nome_api":"GOOGLE", "url_api":"api_google"},
+            {"nome_api":"AIRSOFT", "url_api":"api_airsoft"},
             ]
 
 
@@ -29,7 +29,7 @@ class ApiWatcher():
 
     def pausa_redireciona_menu(self):
         sleep(1)
-        input("\nSelecione Alguma Tecla Para Retornar ao Menu: ")
+        input("\nSelecione Enter Para Retornar ao Menu: ")
         self.limpar_visao()
         
         print("Redirecionando Para Menu...")
@@ -41,7 +41,6 @@ class ApiWatcher():
         dados = {
             "nome_api": input("Nome: ").upper().strip(),
             "url_api": input("Url: ").strip(),
-            "token_api": input("Token: ").strip()
         }
 
         self.__lista_de_api.append(dados)
@@ -51,20 +50,21 @@ class ApiWatcher():
 
 
     def listar_api(self):
-        nome_procurado = input("\nInforme o Nome da Api Procurada ou Tecle Enter Para Listar Diversas: ").upper().strip()
-        resultado_busca = [i for i in self.__lista_de_api if nome_procurado in i["nome_api"]]
+        if not self.__lista_de_api:
+            print("\nNenhuma Api Cadastrada em Sistema.")
+        else:
+            nome_procurado = input("\nInforme o Nome da Api Procurada ou Tecle Enter Para Listar Diversas: ").upper().strip()
 
-        if not self.__lista_de_api == False: 
             if nome_procurado == "":
                 print("\n", self.__lista_de_api)
-            elif resultado_busca == []:
-                print("Api Procurada Fora do Catalogo.")
             else:
-                print(resultado_busca)
-       
-        else:
-            print("\nNenhuma Api Cadastrada em Sistema.")
-       
+                resultado_busca = [i for i in self.__lista_de_api if nome_procurado in i["nome_api"]]
+                if resultado_busca:
+                    print(resultado_busca)
+                
+                else:
+                    print("Api Procurada Fora do Catalogo.")
+        
         self.pausa_redireciona_menu()
 
 
