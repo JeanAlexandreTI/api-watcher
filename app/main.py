@@ -38,13 +38,25 @@ class ApiWatcher():
 
     def cadastro(self):
         self.titulo("| CADASTRO |")
+
         dados = {
             "nome_api": input("Nome: ").upper().strip(),
             "url_api": input("Url: ").strip(),
         }
 
-        self.__lista_de_api.append(dados)
-        print(f"\n{dados['nome_api']} cadastrado(a) com sucesso.")
+
+        if not dados["nome_api"]:
+            print(f"\nCadastrado Com Falta de Nome. Nome Obrigatorio Para Sucesso de Cadastro.")
+        elif not dados["url_api"]:
+            print("\nCadastro Com Falta de Url. Url Obrigatoria Para Sucesso de Cadastro.")
+        else:
+            verifica_cadastro_existente = [dados["nome_api"] == i["nome_api"] or dados["url_api"] == i["url_api"] for i in self.__lista_de_api]
+            
+            if any(verifica_cadastro_existente):
+                print("\nNome ou Url de Api Existente. Verifique '[2] - LISTAR APIs'.")
+            else:
+                self.__lista_de_api.append(dados)
+                print(f"\n{dados['nome_api']} cadastrado(a) com sucesso.")
 
         self.pausa_redireciona_menu()
 
