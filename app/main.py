@@ -44,7 +44,6 @@ class ApiWatcher():
             "url_api": input("Url: ").strip(),
         }
 
-
         if not dados["nome_api"]:
             print(f"\nCadastrado Com Falta de Nome. Nome Obrigatorio Para Sucesso de Cadastro.")
         elif not dados["url_api"]:
