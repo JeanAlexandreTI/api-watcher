@@ -1,6 +1,5 @@
-### API WATCHER
+# API WATCHER
 
-O objetivo do sistema, e registrar APIs e verificar se elas estao ativas, retornando seus codigos.
-
-
-TESTANDO
+### Objetivo
+A estrutura montada tem como principal objetivo de realizar o cadastro de API`s e verificar
+se as mesmas em funcionamento.
