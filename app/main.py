@@ -1,5 +1,6 @@
 import os
 from time import sleep
+import requests as req
 
 class ApiWatcher():
     def __init__(self):
@@ -49,14 +50,29 @@ class ApiWatcher():
         elif not dados["url_api"]:
             print("\nCadastro Com Falta de Url. Url Obrigatoria Para Sucesso de Cadastro.")
         else:
-            verifica_cadastro_existente = [dados["nome_api"] == i["nome_api"] or dados["url_api"] == i["url_api"] for i in self.__lista_de_api]
-            
-            if any(verifica_cadastro_existente):
-                print("\nNome ou Url de Api Existente. Verifique '[2] - LISTAR APIs'.")
-            else:
-                self.__lista_de_api.append(dados)
-                print(f"\n{dados['nome_api']} cadastrado(a) com sucesso.")
+            try:
+                resposta = req.get(dados["url_api"]).status_code 
 
+                if 199 < resposta < 300:
+                    print("Resposta de Api Bem Sucedida.")
+
+                    verifica_cadastro_existente = [dados["nome_api"] == i["nome_api"] or dados["url_api"] == i["url_api"] for i in self.__lista_de_api]
+                    
+                    if any(verifica_cadastro_existente):
+                        print("\nNome ou Url de Api Existente. Verifique '[2] - LISTAR APIs'.")
+                    else:
+                        self.__lista_de_api.append(dados)
+                        print(f"\n{dados['nome_api']} cadastrado(a) com sucesso.")
+                else:
+                    print(f"\nResposta de Api Com Erro. Codigo de Erro: {resposta}.")
+                    print("""
+    300-399 Mensagem de Redirecionamento;
+    400-499 Resposta de Erro do Cliente;
+    500-599 Resposta de Erro do Servidor.
+                    """)
+            except ValueError:
+                print("Url Inexistente.")
+            
         self.pausa_redireciona_menu()
 
 
