@@ -37,6 +37,35 @@ class ApiWatcher():
         sleep(2)
 
 
+    def conferencia_api(self, dados):
+        try:
+            resposta = req.get(dados["url_api"]).status_code 
+
+            if 199 < resposta < 300:
+                print("Resposta de Api Bem Sucedida.")
+
+                verifica_cadastro_existente = [dados["nome_api"] == i["nome_api"] or dados["url_api"] == i["url_api"] for i in self.__lista_de_api]
+                
+                if any(verifica_cadastro_existente):
+                    print("\nNome ou Url de Api Existente. Verifique '[2] - LISTAR APIs'.")
+                else:
+                    self.__lista_de_api.append(dados)
+                    print(f"\n{dados['nome_api']} cadastrado(a) com sucesso.")
+            else:
+                print(f"\nERROR{resposta}. Verifique os Possiveis Motivos a Baixo e Tente Novamente.")
+                print("""
+300-399 Mensagem de Redirecionamento;
+400-499 Resposta de Erro do Cliente;
+500-599 Resposta de Erro do Servidor.
+                """)
+        except (req.exceptions.InvalidSchema, req.exceptions.MissingSchema, req.exceptions.InvalidURL):
+            print("\nUrl Fornecida Com Formato Inadequado. Verifique o Protocolo e o Dominio.")
+        except req.exceptions.ConnectionError:
+            print("Erro de Conexao.")
+        finally:
+            self.pausa_redireciona_menu()
+
+
     def cadastro(self):
         self.titulo("| CADASTRO |")
 
@@ -45,35 +74,12 @@ class ApiWatcher():
             "url_api": input("Url: ").strip(),
         }
 
-        if not dados["nome_api"]:
+        if not dados["nome_api"] or dados["nome_api"] == "":
             print(f"\nCadastrado Com Falta de Nome. Nome Obrigatorio Para Sucesso de Cadastro.")
-        elif not dados["url_api"]:
+        elif not dados["url_api"] or dados["url_api"] == "":
             print("\nCadastro Com Falta de Url. Url Obrigatoria Para Sucesso de Cadastro.")
         else:
-            try:
-                resposta = req.get(dados["url_api"]).status_code 
-
-                if 199 < resposta < 300:
-                    print("Resposta de Api Bem Sucedida.")
-
-                    verifica_cadastro_existente = [dados["nome_api"] == i["nome_api"] or dados["url_api"] == i["url_api"] for i in self.__lista_de_api]
-                    
-                    if any(verifica_cadastro_existente):
-                        print("\nNome ou Url de Api Existente. Verifique '[2] - LISTAR APIs'.")
-                    else:
-                        self.__lista_de_api.append(dados)
-                        print(f"\n{dados['nome_api']} cadastrado(a) com sucesso.")
-                else:
-                    print(f"\nResposta de Api Com Erro. Codigo de Erro: {resposta}.")
-                    print("""
-    300-399 Mensagem de Redirecionamento;
-    400-499 Resposta de Erro do Cliente;
-    500-599 Resposta de Erro do Servidor.
-                    """)
-            except ValueError:
-                print("Url Inexistente.")
-            
-        self.pausa_redireciona_menu()
+            self.conferencia_api(dados)
 
 
     def listar_api(self):
@@ -99,7 +105,6 @@ class ApiWatcher():
     
         while True:
             try:
-
                 self.titulo("| MENU |")
                 self.menu()
 
@@ -121,6 +126,9 @@ class ApiWatcher():
 
             except ValueError:
                 print("ERRO! Por Favor, Informe um Valor Inteiro.")
+            except Exception as e:
+                print(e)
+            finally:
                 self.pausa_redireciona_menu()
 
 
